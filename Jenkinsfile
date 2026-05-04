@@ -20,7 +20,7 @@ pipeline {
             steps {
                 dir('/home/kyo/devops-158-Expi2b') {
                     sh '''
-                        source venv/bin/activate
+                        . venv/bin/activate
                         pip install flask
                     '''
                 }
@@ -32,7 +32,7 @@ pipeline {
                     sh 'pkill -f "python app.py" || true'
                     sh '''
                         cd /home/kyo/devops-158-Expi2b
-                        source venv/bin/activate
+                        . venv/bin/activate
                         nohup python app.py > flask.log 2>&1 &
                     '''
                 }
