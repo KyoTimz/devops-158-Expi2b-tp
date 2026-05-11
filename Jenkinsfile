@@ -1,14 +1,17 @@
 pipeline {
     agent any
+
     triggers {
         pollSCM('* * * * *')
     }
+
     stages {
         stage('Checkout') {
             steps {
                 git branch: 'main', url: 'https://github.com/KyoTimz/devops-158-Expi2b-tp.git'
             }
         }
+
         stage('Pull latest code') {
             steps {
                 dir('/home/kyo/devops-158-Expi2b') {
@@ -16,6 +19,7 @@ pipeline {
                 }
             }
         }
+
         stage('Install dependencies') {
             steps {
                 dir('/home/kyo/devops-158-Expi2b') {
@@ -26,6 +30,7 @@ pipeline {
                 }
             }
         }
+
         stage('Restart Flask app') {
             steps {
                 script {
@@ -33,12 +38,13 @@ pipeline {
                     sh '''
                         cd /home/kyo/devops-158-Expi2b
                         . venv/bin/activate
-                        nohup python app.py > flask.log 2>&1 &
+                        JENKINS_NODE_COOKIE=dontKillMe nohup python app.py > flask.log 2>&1 &
                     '''
                 }
             }
         }
     }
+
     post {
         success {
             echo 'Déploiement automatique réussi ! BRAVO DAMN'
